@@ -1,0 +1,22 @@
+
+/////////////////  README- Tema #2 Planificarea de task-uri intr-un datacenter //////////////
+
+
+    Am implementat pentru fiecare host o coada blocanta de task-uri, 
+    aceasta fiind o instanta o unei cozi de prioritati(task-urile fiind ordonate 
+    in functie de expresia lambda data in paranteza , folosita drept comparator si respecta 
+    cerintele precizate in enunt), iar un task se repartizeaza unui host in functie de 
+    ce algoritm avem: 
+    .. RR : task ul se duce la urmatorul host disponibil, folosim AtomicInteger pt a evita problemele de sincronizare
+    .. SQ : task ul se duce la hostul cu cele mai putine task uri la momentul respectiv
+    .. SITA : 3 tipuri de host si task ul se duce in functie de tipul acestuia
+    .. LWL : task ul se duce la hostul care are suma timpilor de executie ramasi cea mai mica
+
+    Cat timp coada nu e goala, se declara un task si se ia din coada, acesta se adauga in runningtasks, daca task este 
+    preemptibil si gaseste un task cu prioritate mai mare , se face switch ul cu acel task.
+    Daca task ul mai are timp de executie, i se da sleep 1 secunda , se modifica timpul de executie ramas si se 
+    adauga inapoi in coada, altfel i se da finish si se scoate din runningtasks. Metodele din clasa myHost sunt
+    addTask : se adauga in coada de task uri a hostului respectiv
+    getQueueSize : returneaza dimensiunea cozii de task uri a hostului respectiv la care se aduauga si dimensiunea runningtasks
+    getWorkLeft : returneaza suma timpilor de executie ramasi a task urilor din coada de task uri a hostului respectiv si din runningtasks
+    shutdown : se seteaza variabila de shutdown a hostului respectiv pe false si se da interrupt la thread ul hostului respectiv
